@@ -1,8 +1,9 @@
 
  const multer=require("multer")
+
 const storage =multer.diskStorage({
     destination:(req,File,cb)=>{
-      cb(null,"./public")
+      cb(null,"/public")
     },
     filename:(req,file,cb)=>{
         cb(null,file.originalname)
