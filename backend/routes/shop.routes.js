@@ -4,9 +4,12 @@
 
 
 const express=require("express");
-const createEditShop = require("../controllers/shop.controllers");
+
 const isAuth = require("../middlewares/isAuth");
+
 const upload = require("../middlewares/multer");
+
+const { createEditShop, getMyShop } = require("../controllers/shop.controllers");
 
 
 
@@ -15,7 +18,9 @@ const shopRouter=express.Router()
 
 
 
-shopRouter.get("/create-edit",isAuth,upload.single("image"),createEditShop)
+shopRouter.post("/create-edit",isAuth,upload.single("image"),createEditShop)
+
+shopRouter.get("/gey-my",isAuth,getMyShop)
 
 
 
