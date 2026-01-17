@@ -10,15 +10,29 @@ const creatteShop=async(req,res)=>{
         if(req.file){
             image=await uploadOnCloudinary(req.file.path)
         }
-        const shop=await Shop.create({
-            name,
-            city,
-            state,
-            address,
-            image,
-            owner:req.userId
-        })
-        await shop.populate("owner")
+        let shop=await Shop.findOne({owner:req.userId})
+        if(!shop){
+             shop=await Shop.create({
+                name,
+                city,
+                state,
+                address,
+                image,
+                owner:req.userId
+            })
+        }else{
+            shop=await Shop.findByIdAndUpdate(shop._id,{
+                name,
+                city,
+                state,
+                address,
+                image,
+                owner:req.userId
+            },{new:true}) 
+
+        }
+       
+       
      
         return res.status(201).json(shop)
 
