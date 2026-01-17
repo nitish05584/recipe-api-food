@@ -8,7 +8,7 @@ import DeliveryBoy from '../components/DeliveryBoy'
 const Home = () => {
     const {userData}=useSelector(state=>state.user)
   return (
-    <div >
+    <div className='w-[100vw] min-h-[100vh] pt-[100px] flex flex-col items-center bg-[#fff9f6] ' >
 
        {userData.role=="user" && <UserDashboard/>}
 

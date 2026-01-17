@@ -39,7 +39,7 @@ const Nav = () => {
     <div className='w-full h-[80px] flex items-center justify-between md:justify-center gap-[30px] px-[20px] fixed top-0 z-[9999] bg-[#fff9f6] overflow-visible'>
 
 
-        {showSearch &&   <div className='w-[90%] h-[60px] bg-white shadow-xl rounded-lg  flex items-center gap-[20px] fixed top-[80px] left-[5%] md:hidden'>
+        {showSearch && userData.role=="user" &&   <div className='w-[90%] h-[60px] bg-white shadow-xl rounded-lg  flex items-center gap-[20px] fixed top-[80px] left-[5%] md:hidden'>
 
 <div className='flex items-center w-[30%] overflow-hidden gap-[10px] px-[10px] border-r-[2px] border-gray-400'>
 <IoLocationSharp size={20} className='text-red-500'/>
@@ -61,7 +61,7 @@ const Nav = () => {
 
         <h1 className='text-3xl font-bold mb-2 text-red-500'>Vingo</h1>
        
-
+        {userData.role=="user" &&
        <div className='md:w-[60%] lg:w-[40%] h-[60px] bg-white shadow-xl rounded-lg hidden md:flex items-center '>
 
 
@@ -80,18 +80,27 @@ const Nav = () => {
 
        </div>
 
+        }
 
 
 
 
         <div className='flex items-center gap-4'>
-            {showSearch?<RxCross2 size={20} className='text-red-400 md:hidden cursor-pointer'onClick={()=>setShowSearch(false)}/>:
+            {userData.role=="user" &&  ( showSearch?<RxCross2 size={20} className='text-red-400 md:hidden cursor-pointer'onClick={()=>setShowSearch(false)}/>:
         <IoSearchSharp size={20} className='text-red-400 md:hidden cursor-pointer'onClick={()=>setShowSearch(true)} />
-            }
+            )}
+
+
+
+
+
+
+
+        {userData.role=="user" &&
        <div className='relative cursor-pointer'>
        <LuShoppingCart size={25} className='text-red-500'/>
          <span className='absolute right-[-9px] top-[-12px] text-red-500'>0</span>
-       </div>
+       </div>}
 
 
 
