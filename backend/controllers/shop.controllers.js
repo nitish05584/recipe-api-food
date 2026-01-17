@@ -3,7 +3,7 @@ const uploadOnCloudinary = require("../utils/cloudinary");
 
 
 
-const creatteShop=async(req,res)=>{
+const createEditShop=async(req,res)=>{
     try {
         const {name,city,state,address}=req.body
         let image;
@@ -32,7 +32,7 @@ const creatteShop=async(req,res)=>{
 
         }
        
-       
+       await shop.populate("owner")
      
         return res.status(201).json(shop)
 
@@ -41,4 +41,5 @@ const creatteShop=async(req,res)=>{
     }
 }
 
+module.exports=createEditShop
 
