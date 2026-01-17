@@ -12,6 +12,7 @@ const uploadOnCloudinary = async (file) => {
     });
     try {
         const result = await cloudinary.uploader.upload(file)
+        
         fs.unlinkSync(file)
 
         return result.secure_url
