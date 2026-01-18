@@ -1,61 +1,62 @@
 const Shop = require("../models/shop.model");
+
 const uploadOnCloudinary = require("../utils/cloudinary");
 
 
 
-const createEditShop=async(req,res)=>{
+const createEditShop = async (req, res) => {
     try {
-        const {name,city,state,address}=req.body
+        const { name, city, state, address } = req.body
         let image;
-        if(req.file){
-            image=await uploadOnCloudinary(req.file.path)
+        if (req.file) {
+            image = await uploadOnCloudinary(req.file.path)
         }
-        let shop=await Shop.findOne({owner:req.userId})
-        if(!shop){
-             shop=await Shop.create({
+        let shop = await Shop.findOne({ owner: req.userId })
+        if (!shop) {
+            shop = await Shop.create({
                 name,
                 city,
                 state,
                 address,
                 image,
-                owner:req.userId
+                owner: req.userId
             })
-        }else{
-            shop=await Shop.findByIdAndUpdate(shop._id,{
+        } else {
+            shop = await Shop.findByIdAndUpdate(shop._id, {
                 name,
                 city,
                 state,
                 address,
                 image,
-                owner:req.userId
-            },{new:true}) 
+                owner: req.userId
+            }, { new: true })
 
         }
-       
-       await shop.populate("owner")
-     
+
+        await shop.populate("owner")
+
         return res.status(201).json(shop)
 
     } catch (error) {
-        return res.status(500).json({message:`create shop error${error}`})
+        return res.status(500).json({ message: `create shop error${error}` })
     }
 }
 
-const getMyShop=async(req,res)=>{
+const getMyShop = async (req, res) => {
     try {
-        const shop=await Shop.findOne({owner:req.userId}).populate("owner items")
+        const shop = await Shop.findOne({ owner: req.userId }).populate("owner items")
 
-        if(!shop){
+        if (!shop) {
             return null
         }
         return res.status(200).json(shop)
-        
+
     } catch (error) {
-        return res.status(500).json({message:`get my shop error${error}`})  
+        return res.status(500).json({ message: `get my shop error${error}` })
     }
 }
 
-module.exports=
+module.exports =
 {
     createEditShop,
     getMyShop

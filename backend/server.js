@@ -13,6 +13,11 @@ const authRouter = require("./routes/auth.routes");
 
 const userRouter = require("./routes/user.routes");
 
+const shopRouter = require("./routes/shop.routes");
+const itemRouter = require("./routes/item.routes");
+
+
+
 
 
 
@@ -38,6 +43,9 @@ app.use("/api/auth",authRouter)
 
 app.use("/api/user",userRouter)
 
+app.use("/api/shop",shopRouter)
+
+app.use("/api/item",itemRouter)
 
 
 
