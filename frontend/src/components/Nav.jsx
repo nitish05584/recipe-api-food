@@ -23,7 +23,9 @@ import axios from 'axios';
 
 
 const Nav = () => {
-    const {userData,city}=useSelector(state=>state.user)
+    const {userData,currentCity}=useSelector(state=>state.user)
+
+    const {myShopData}=useSelector(state=>state.owner)
 
     const [showInfo,setShowInfo]=useState(false)
 
@@ -49,7 +51,7 @@ const Nav = () => {
 
 <div className='flex items-center w-[30%] overflow-hidden gap-[10px] px-[10px] border-r-[2px] border-gray-400'>
 <IoLocationSharp size={20} className='text-red-500'/>
-<div className='w-[80%] truncate text-gray-600'>{city}</div>
+<div className='w-[80%] truncate text-gray-600'>{currentCity}</div>
 </div>
 
 
@@ -73,7 +75,7 @@ const Nav = () => {
 
          <div className='flex items-center w-[30%] overflow-hidden gap-[10px] px-[10px] border-r-[2px] border-gray-400'>
          <IoLocationSharp size={20} className='text-red-500'/>
-         <div className='w-[80%] truncate text-gray-600'>{city}</div>
+         <div className='w-[80%] truncate text-gray-600'>{currentCity}</div>
          </div>
 
 
@@ -98,6 +100,7 @@ const Nav = () => {
 
 
           {userData.role=="owner" ? <>
+          {myShopData && <>
             <button className='hidden md:flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-red-500'>
             <FaPlus size={20}  />
             <span>Add Food Item</span>
@@ -107,7 +110,9 @@ const Nav = () => {
 
             <button className='md:hidden flex items-center  p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-red-500'>
             <FaPlus size={20}  />
-            </button>
+            </button> </>}
+
+
 
             <div className='hidden  md:flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-full bg-[#ff4d2d]/10 text-red-500 font-medium'>
             <TbReceipt2 size={20}/>
