@@ -1,8 +1,5 @@
-
-
 const cloudinary = require('cloudinary').v2;
-
-const fs = require("fs")
+const fs = require('fs');
 
 const uploadOnCloudinary = async (file) => {
     cloudinary.config({
@@ -10,16 +7,24 @@ const uploadOnCloudinary = async (file) => {
         api_key: process.env.CLOUDINARY_APIKEY,
         api_secret: process.env.CLOUDINARY_APISECRET
     });
-    try {
-        const result = await cloudinary.uploader.upload(file)
-        
-        fs.unlinkSync(file)
 
-        return result.secure_url
+    try {
+        const result = await cloudinary.uploader.upload(file);
+
+     
+        if (fs.existsSync(file)) {
+            fs.unlinkSync(file);
+        }
+
+        return result.secure_url;
 
     } catch (error) {
-        fs.unlinkSync(file)
-        console.log(error)
+        
+        if (fs.existsSync(file)) {
+            fs.unlinkSync(file);
+        }
+        console.log("Cloudinary upload error:", error);
+        
     }
 }
 

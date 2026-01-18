@@ -9,6 +9,7 @@ const createEditShop = async (req, res) => {
         const { name, city, state, address } = req.body
         let image;
         if (req.file) {
+           
             image = await uploadOnCloudinary(req.file.path)
         }
         let shop = await Shop.findOne({ owner: req.userId })
@@ -44,12 +45,15 @@ const createEditShop = async (req, res) => {
 
 const getMyShop = async (req, res) => {
     try {
-        const shop = await Shop.findOne({ owner: req.userId }).populate("owner items")
+        const shop = await Shop.findOne({ owner: req.userId }).populate("owner Items");
 
+             
         if (!shop) {
-            return null
+            return null;
+
         }
         return res.status(200).json(shop)
+        
 
     } catch (error) {
         return res.status(500).json({ message: `get my shop error${error}` })
