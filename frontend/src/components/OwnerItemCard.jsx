@@ -1,7 +1,9 @@
 import React from 'react'
 import { FaPen } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 const OwnerItemCard = ({data}) => {
+    const navigate=useNavigate()
   return (
     <div className='flex bg-white rounded-lg shadow-md overflow-hidden border border-red-500 w-full max-w-2xl'>
 
@@ -20,7 +22,7 @@ const OwnerItemCard = ({data}) => {
 
                 <div className='flex items-center gap-2'>
 
-                    <div className=' p-2 rounded-full hover:bg-[#ff4d2d]/10 text-red-500 cursor-pointer'> <FaPen
+                    <div className=' p-2 rounded-full hover:bg-[#ff4d2d]/10 text-red-500 cursor-pointer'onClick={()=>navigate(`edit-item/${data._id}`)}> <FaPen
                       size={16}/>
                       </div>
 
