@@ -19,8 +19,12 @@ const addItem = async (req, res) => {
         const item = await Item.create({
             name, category, foodType, price, image, shop: shop._id
         })
+        shop.items.push(item._id)
+        await shop.save()
 
-        return res.status(201).json(item)
+        await shop.populate("items owner")
+
+        return res.status(201).json(shop)
 
     } catch (error) {
         return res.status(500).json({ message: `add item error ${error}` })
@@ -45,6 +49,7 @@ const editItem = async (req, res) => {
             return res.status(400).json({ message: "item not found" })
         }
         return res.status(200).json(item)
+
     } catch (error) {
         return res.status(500).json({ message: `edt item error ${error}` })
     }
