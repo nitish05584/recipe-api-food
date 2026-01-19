@@ -89,7 +89,7 @@ const OwnerDashboard = () => {
       <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-2'>Add your Food Item</h2>
 
       <p className='text-gray-600mmb-4 text-sm sm:text-base'>Share you delicious creations with our customers by adding them to the menu.</p>
-      <button className='bg-red-500 text-white px-5 sm:px-6 py-2 rounded-full font-medium shadow-md hover:bg-orange-600 transition-colors duration-200 cursor-pointer'onClick={()=>navigate("/add-food")}>
+      <button className='bg-red-500 text-white px-5 sm:px-6 py-2 rounded-full font-medium shadow-md hover:bg-orange-600 transition-colors duration-200 cursor-pointer'onClick={()=>navigate("/add-item")}>
         Add Food
       </button>
 

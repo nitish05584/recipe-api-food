@@ -38,7 +38,7 @@ const App = () => {
       <Route path="/create-edit-shop" element={userData?<CreateEditShop/>:<Navigate to={"/signin"}/>}/>
 
 
-      <Route path="/add-food" element={userData?<AddItem/>:<Navigate to={"/signin"}/>}/>
+      <Route path="/add-item" element={userData?<AddItem/>:<Navigate to={"/signin"}/>}/>
 
 
     </Routes>
