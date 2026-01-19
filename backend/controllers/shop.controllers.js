@@ -45,7 +45,7 @@ const createEditShop = async (req, res) => {
 
 const getMyShop = async (req, res) => {
     try {
-        const shop = await Shop.findOne({ owner: req.userId }).populate("owner Items");
+        const shop = await Shop.findOne({ owner: req.userId }).populate("owner items");
 
              
         if (!shop) {
