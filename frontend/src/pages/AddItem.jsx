@@ -17,14 +17,18 @@ const AddItem = () => {
 
   
 
-      const [name,setName]=useState(myShopData?.name||"") 
+      const [name,setName]=useState("") 
+
+      const [price,setPrice]=useState(0)
 
       
 
 
-      const [frontendImage,setFrontendImage]=useState(myShopData?.image|| null)
+      const [frontendImage,setFrontendImage]=useState(null)
 
       const [backendImage,setBackendImage]=useState(null)
+
+      const categories=[]
 
       const dispatch=useDispatch()
 
@@ -110,6 +114,12 @@ const AddItem = () => {
                         <img src={frontendImage} alt="" className='w-full h-48 object-cover rounded-lg border'/>
                     </div>
                        }
+                </div>
+
+
+                <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>Price</label>
+                    <input type="number" placeholder="0" className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500'onChange={(e)=>setPrice(e.target.value)} value={price}/>
                 </div>
 
 
