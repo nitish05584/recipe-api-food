@@ -1,4 +1,4 @@
-import image1 from "./assets/image1.jpg"
+import image1 from "./assets/image1 (1).jpg"
 
 import image2 from "./assets/image2.webp"
 
@@ -23,7 +23,7 @@ import image11 from "./assets/image11.jpg"
 
 
 
-export const categories=[
+ const categories=[
     {"category":"Snacks","image":image1},
 
     {"category":"Main Course","image":image2},
@@ -46,3 +46,5 @@ export const categories=[
 
     {"category":"All","image":image11},
 ]
+
+export default categories
