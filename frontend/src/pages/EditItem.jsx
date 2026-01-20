@@ -1,12 +1,13 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaUtensils } from "react-icons/fa";
 import axios from 'axios';
 import { serverUrl } from '../App';
 import { setMyShopData } from '../redux/ownerSlice';
+import { ClipLoader } from 'react-spinners';
 
 
 
@@ -16,26 +17,27 @@ const EditItem = () => {
     const {myShopData}=useSelector(state=>state.owner)
     
 
-    
+    const {itemId}=useParams()
 
-  
-
+    const [currentItem,setCurrentItem]=useState(null)
   
 
       const [name,setName]=useState("") 
 
-      const [price,setPrice]=useState(0)
+      const [price,setPrice]=useState("")
 
       
 
 
-      const [frontendImage,setFrontendImage]=useState(null)
+      const [frontendImage,setFrontendImage]=useState("")
 
       const [backendImage,setBackendImage]=useState(null)
 
       const [category,setCategory]=useState("")
 
-      const [foodType,setFoodType]=useState("veg")
+      const [foodType,setFoodType]=useState("")
+
+      const [loading,setLoading]=useState(false)
 
       const categories=[
         "Snack",
@@ -62,7 +64,7 @@ const EditItem = () => {
 
       const handleSubmit=async(e)=>{
         e.preventDefault()
-
+         setLoading(true)
         try {
             const formData=new FormData()
 
@@ -80,16 +82,43 @@ const EditItem = () => {
                 formData.append("image",backendImage)
             }
 
-            const result=await axios.post(`${serverUrl}/api/item/add-item`,formData,{withCredentials:true})
+            const result=await axios.post(`${serverUrl}/api/item/edit-item/${itemId}`,formData,{withCredentials:true})
             dispatch(setMyShopData(result.data))
-            console.log(result.data)
-           
+            
+           setLoading(false)
+
+           navigate("/")
 
         } catch (error) {
-           console.log(error) 
+           console.log(error)
+           setLoading(false)
         }
 
       }
+
+      useEffect(()=>{
+        const handleGetItemById=async()=>{
+           try {
+            const result=await axios.get(`${serverUrl}/api/item/get-by-id/${itemId}`,{withCredentials:true})
+            setCurrentItem(result.data)
+           } catch (error) {
+            console.log(error)
+           } 
+        }
+        handleGetItemById()
+      },[itemId])
+
+      useEffect(()=>{
+       setName(currentItem?.name || "")
+       setPrice(currentItem?.price || 0)
+
+       setCategory(currentItem?.category || "")
+
+       setFoodType(currentItem?.foodType || "")
+
+       setFrontendImage(currentItem?.image || "")
+
+      },[currentItem])
 
 
   return (
@@ -113,7 +142,7 @@ const EditItem = () => {
 
 
             <div className='text-3xl font-extrabold text-gray-900'>
-              Add food
+              Edit food
 
             </div>
 
@@ -139,7 +168,7 @@ const EditItem = () => {
 
                     {frontendImage &&
                     <div className='mt-4'>
-                        <img src={frontendImage} alt="" className='w-full h-48 object-cover rounded-lg border'/>
+                        <img src={frontendImage} alt="" className='w-full h-full object-cover rounded-lg border'/>
                     </div>
                        }
                 </div>
@@ -181,7 +210,7 @@ const EditItem = () => {
 
 
 
-                <button className='w-full bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-200 cursor-pointer'>Save</button>
+                <button className='w-full bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-200 cursor-pointer'disabled={loading}>{loading?<ClipLoader size={20} color='white'/>:"Save"}</button>
 
             </form>
             
