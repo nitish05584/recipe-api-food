@@ -2,13 +2,30 @@ import React from 'react'
 import { FaPen } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { serverUrl } from '../App';
+import { useDispatch } from 'react-redux';
+import { setMyShopData } from '../redux/ownerSlice';
+import axios from 'axios';
 const OwnerItemCard = ({data}) => {
     const navigate=useNavigate()
+    const dispatch=useDispatch()
+     
+    const handleDelete=async()=>{
+        try {
+            const result=await axios.get(`${serverUrl}/api/item/delete/${data._id}`,{withCredentials:true})
+           dispatch( setMyShopData(result.data))
+        } catch (error) {
+           console.log(error) 
+        }
+      
+    }
+
+
   return (
     <div className='flex bg-white rounded-lg shadow-md overflow-hidden border border-red-500 w-full max-w-2xl'>
 
-        <div className='w-36 h-[full] flex-shrink-0 bg-gray-50 '>
-            <img src={data.image} alt=""/>
+        <div className='w-36  flex-shrink-0 bg-gray-50 '>
+            <img src={data.image} alt="" className='w-full h-full object-cover'/>
         </div>
         <div className='flex flex-col justify-between p-3 flex-1'>
             <div>
@@ -26,7 +43,7 @@ const OwnerItemCard = ({data}) => {
                       size={16}/>
                       </div>
 
-                      <div className=' p-2 rounded-full hover:bg-[#ff4d2d]/10 text-red-500 cursor-pointer'><FaTrash size={16} /></div>
+                      <div className=' p-2 rounded-full hover:bg-[#ff4d2d]/10 text-red-500 cursor-pointer'onClick={handleDelete}><FaTrash size={16} /></div>
 
                 </div>
 

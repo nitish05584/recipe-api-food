@@ -22,7 +22,11 @@ const addItem = async (req, res) => {
         shop.items.push(item._id)
         await shop.save()
 
-        await shop.populate("items owner")
+        await shop.populate("owner")
+        await shop.populate({
+            path: "items",
+            options: { sort: { updatedAt: -1 } }
+        });
 
         return res.status(201).json(shop)
 
@@ -48,7 +52,10 @@ const editItem = async (req, res) => {
         if (!item) {
             return res.status(400).json({ message: "item not found" })
         }
-        const shop=await Shop.findOne({owner:req.userId}).populate("items")
+        const shop = await Shop.findOne({ owner: req.userId }).populate({
+            path: "items",
+            options: { sort: { updatedAt: -1 } }
+        });
         return res.status(200).json(shop)
 
     } catch (error) {
@@ -57,12 +64,12 @@ const editItem = async (req, res) => {
 }
 
 
-const getItemById=async(req,res)=>{
+const getItemById = async (req, res) => {
     try {
-        const itemId=req.params.itemId
-        const item=await Item.findById(itemId)
-        if(!item){
-            return res.status(400).json({ message: "item not found" }) 
+        const itemId = req.params.itemId
+        const item = await Item.findById(itemId)
+        if (!item) {
+            return res.status(400).json({ message: "item not found" })
         }
         return res.status(200).json(item)
     } catch (error) {
@@ -71,10 +78,46 @@ const getItemById=async(req,res)=>{
 }
 
 
+const deleteItem = async (req, res) => {
+    try {
+        const itemId = req.params.itemId
+
+        // delete item
+        const item = await Item.findByIdAndDelete(itemId)
+        if (!item) {
+            return res.status(400).json({ message: "item not found" })
+        }
+
+        // find shop
+        const shop = await Shop.findOne({ owner: req.userId })
+        if (!shop) {
+            return res.status(400).json({ message: "shop not found" })
+        }
+
+        // remove item from shop
+        shop.items.pull(item._id)
+        await shop.save()
+
+        // populate updated items
+        await shop.populate({
+            path: "items",
+            options: { sort: { updatedAt: -1 } }
+        })
+
+        return res.status(200).json(shop)
+
+    } catch (error) {
+        return res.status(500).json({ message: `delete item error ${error}` })
+    }
+}
+
+
+
 module.exports =
 {
     addItem,
     editItem,
-    getItemById
+    getItemById,
+    deleteItem
 
 }

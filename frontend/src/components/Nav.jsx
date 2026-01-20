@@ -19,6 +19,7 @@ import { FaPlus } from "react-icons/fa6";
 import { TbReceipt2 } from "react-icons/tb";
 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -32,6 +33,8 @@ const Nav = () => {
     const [showSearch,setShowSearch]=useState(false)
 
     const dispatch=useDispatch()
+
+    const navigate=useNavigate()
 
     const handleLogOut=async()=>{
       try {
@@ -101,14 +104,14 @@ const Nav = () => {
 
           {userData.role=="owner" ? <>
           {myShopData && <>
-            <button className='hidden md:flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-red-500'>
+            <button className='hidden md:flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-red-500' onClick={()=>navigate("/add-item")}>
             <FaPlus size={20}  />
             <span>Add Food Item</span>
 
             </button>
 
 
-            <button className='md:hidden flex items-center  p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-red-500'>
+            <button className='md:hidden flex items-center  p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-red-500'onClick={()=>navigate("/add-item")}>
             <FaPlus size={20}  />
             </button> </>}
 
@@ -138,6 +141,7 @@ const Nav = () => {
 
      <button className='hidden md:block px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-red-500 text-sm font-medium'>My Orders</button>
               </>
+
             )}
 
 
@@ -161,7 +165,8 @@ const Nav = () => {
             {userData.fullName}
         </div>
 
-        <div className='md:hidden text-red-500 font-semibold cursor-pointer'>My Orders</div>
+        {userData.role=="user" &&
+        <div className='md:hidden text-red-500 font-semibold cursor-pointer'>My Orders</div>}
 
         <div className='text-red-500 font-semibold cursor-pointer'onClick={handleLogOut}>Log Out</div>
 

@@ -168,7 +168,7 @@ const EditItem = () => {
 
                     {frontendImage &&
                     <div className='mt-4'>
-                        <img src={frontendImage} alt="" className='w-full h-full object-cover rounded-lg border'/>
+                        <img src={frontendImage} alt="" className='w-full h-48 object-cover rounded-lg border'/>
                     </div>
                        }
                 </div>
