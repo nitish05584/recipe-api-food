@@ -111,6 +111,30 @@ const deleteItem = async (req, res) => {
     }
 }
 
+const getItemByCity=async(req,res)=>{
+  try {
+    const {city}=req.params
+    if(!city){
+        return res.status(400).json({message:"city is required"})
+    }
+
+    const shops=await Shop.find({
+        city:{$regex:new RegExp(`^${city}$`,"i")}
+        }).populate("items")
+       if(!shops){
+        return res.status(400).json({message:"shops not found"})
+       }
+       const shopIds=shops.map((shop)=>shop._id)
+
+       const items=await Item.find({shop:{$in:shopIds}})
+
+       return res.status(200).json(items)
+
+  } catch (error) {
+    return res.status(500).json({ message: `get item by city  error ${error}` })
+  }  
+}
+
 
 
 module.exports =
@@ -118,6 +142,7 @@ module.exports =
     addItem,
     editItem,
     getItemById,
-    deleteItem
+    deleteItem,
+    getItemByCity
 
 }

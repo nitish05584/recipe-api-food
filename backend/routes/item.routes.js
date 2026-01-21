@@ -10,7 +10,7 @@ const express=require("express");
 
 const isAuth = require("../middlewares/isAuth");
 
-const { addItem, editItem, getItemById, deleteItem } = require("../controllers/item.controllers");
+const { addItem, editItem, getItemById, deleteItem, getItemByCity } = require("../controllers/item.controllers");
 
 const upload = require("../middlewares/multer");
 
@@ -31,6 +31,9 @@ itemRouter.get("/get-by-id/:itemId",isAuth,getItemById)
 
 itemRouter.get("/delete/:itemId",isAuth,deleteItem)
 
+
+
+itemRouter.get("/get-by-city/:city",isAuth,getItemByCity)
 
 
 
