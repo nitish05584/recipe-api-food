@@ -24,8 +24,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Nav = () => {
-    const {userData,currentCity}=useSelector(state=>state.user)
-
+    const {userData,currentCity,cartItems}=useSelector(state=>state.user)
+  
     const {myShopData}=useSelector(state=>state.owner)
 
     const [showInfo,setShowInfo]=useState(false)
@@ -132,9 +132,9 @@ const Nav = () => {
 
             </>:(
               <>
-                <div className='relative cursor-pointer'>
+                <div className='relative cursor-pointer'onClick={()=>navigate("/cart")}>
        <LuShoppingCart size={25} className='text-red-500'/>
-         <span className='absolute right-[-9px] top-[-12px] text-red-500'>0</span>
+         <span className='absolute right-[-9px] top-[-12px] text-red-500'>{cartItems.length}</span>
        </div>
 
 

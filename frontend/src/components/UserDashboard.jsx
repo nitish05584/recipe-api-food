@@ -111,7 +111,7 @@ const UserDashboard = () => {
           )}
 
           <div ref={shopScrollRef} className='flex overflow-x-auto gap-4 pb-2'>
-            {shopsInMyCity.map((shop, index) => (
+            {shopsInMyCity?.map((shop, index) => (
               <CategoryCard name={shop.name} image={shop.image} key={index} />
             ))}
           </div>
