@@ -124,7 +124,7 @@ const AddItem = () => {
 
                 <div>
                     <label className='block text-sm font-medium text-gray-700 mb-1'>Name</label>
-                    <input type="text" placeholder="Enter Shop Name" className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500'onChange={(e)=>setName(e.target.value)} value={name}/>
+                    <input type="text" placeholder="Enter Food Name" className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500'onChange={(e)=>setName(e.target.value)} value={name}/>
                 </div>
 
 
