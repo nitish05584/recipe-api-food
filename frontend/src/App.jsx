@@ -55,7 +55,7 @@ const App = () => {
 
       <Route path="/cart" element={userData?<CartPage/>:<Navigate to={"/signin"}/>}/>
 
-      <Route path="/checkOut" element={userData?<CheckOut/>:<Navigate to={"/signin"}/>}/>
+      <Route path="/checkout" element={userData?<CheckOut/>:<Navigate to={"/signin"}/>}/>
 
 
     </Routes>
