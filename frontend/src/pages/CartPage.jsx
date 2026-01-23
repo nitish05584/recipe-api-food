@@ -6,7 +6,7 @@ import CartItemCard from '../components/CartItemCard';
 
 const CartPage = () => {
   const navigate=useNavigate()
-  const {cartItems}=useSelector(state=>state.user)
+  const {cartItems,totalAmount}=useSelector(state=>state.user)
   return (
     <div className='min-h-screen bg-[#fff9f6] flex justify-center p-6'>
      
@@ -21,11 +21,22 @@ const CartPage = () => {
       </div>
       {cartItems?.length===0 ? (
         <p className='text-gray-500 text-lg text-center'>your Cart is Empty</p>
-      ):(<div>
+      ):(<>
+      <div>
         {cartItems?.map((item,index)=>(
           <CartItemCard data={item} key={index}/>
         ))}
-      </div>)}
+      </div>
+      <div className='mt-6 bg-white p-4 rounded-xl shadow flex justify-between items-center border'>
+         <h1 className='text-lg font-semibold'>Total Amount</h1>
+         <span className='text-xl font-bold text-red-500'>₹{totalAmount}</span>
+      </div>
+
+      <div className='mt-4 flex justify-end'>
+        <button className='bg-red-500 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-red-500 transition cursor-pointer'>Proceed to  CheckOut</button>
+      </div>
+      </>
+    )}
 
      </div>
       
