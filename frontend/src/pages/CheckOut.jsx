@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 
 import "leaflet/dist/leaflet.css"
-import { setLocation } from '../redux/mapSlice';
+import { setAddress, setLocation } from '../redux/mapSlice';
+import axios from 'axios';
 
 function RecenterMap({location}){
     if(location.lat && location.lon){
@@ -23,15 +24,60 @@ function RecenterMap({location}){
 
 function CheckOut() {
     const { location, address } = useSelector(state => state.map)
+    const [addressInput,setAddressInput]=useState("")
+    const apiKey=import.meta.env.VITE_GEOAPIKEY
     const dispatch=useDispatch()
 
 const onDragEnd=(e)=>{
    
     const {lat,lng}=e.target._latlng
     dispatch(setLocation({lat,lon:lng}))
+
+    getAddressByLatLng(lat,lng)
     
 }
-   
+
+const getCurrentLocation=()=>{
+    navigator.geolocation.getCurrentPosition(async (position)=>{
+        
+        const latitude=position.coords.latitude
+        
+        const longitude=position.coords.longitude
+
+        dispatch(setLocation({lat:latitude,lon:longitude}))
+        getAddressByLatLng(latitude,longitude)
+    })
+   }
+
+const getAddressByLatLng=async (lat,lng)=>{
+    try {
+        
+
+        const result=await axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&format=json&apiKey=${apiKey}`) 
+    
+     
+      dispatch(setAddress(result?.data?.results[0].address_line2))
+
+    } catch (error) {
+       console.log(error) 
+    }
+}
+
+const getLatLngByAddress=async()=>{
+    try {
+        const result=await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${encodeURI(addressInput)}&apiKey=${apiKey}`)
+       const {lat,lon}=result.data.features[0].properties
+       dispatch(setLocation({lat,lon}))
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+useEffect(()=>{
+setAddressInput(address)
+},[])
+
 
 
     return (
@@ -51,12 +97,13 @@ const onDragEnd=(e)=>{
                         Delivery Location</h2>
 
                     <div className='flex gap-2 mb-3'>
-                        <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' placeholder='Enter your Delivery Address...' value={address} readOnly/>
+                        <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' placeholder='Enter your Delivery Address...'
+                        onChange={(e)=>setAddressInput(e.target.value)} value={addressInput} />
 
-                        <button className='bg-red-500 hover:bg-red-500 text-white px-3 py-2 rounded-lg flex items-center justify-center'><IoMdSearch />
+                        <button className='bg-red-500 hover:bg-red-500 text-white px-3 py-2 rounded-lg flex items-center justify-center'onClick={getLatLngByAddress}><IoMdSearch />
                         </button>
 
-                        <button className='bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center justify-center'><TbCurrentLocation /></button>
+                        <button className='bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center justify-center'onClick={getCurrentLocation}><TbCurrentLocation /></button>
                     </div>
 
 
