@@ -11,6 +11,13 @@ import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 
 import "leaflet/dist/leaflet.css"
 import { setAddress, setLocation } from '../redux/mapSlice';
+
+import { MdDeliveryDining } from "react-icons/md";
+
+import { FaMobileScreenButton } from "react-icons/fa6";
+
+import { FaCreditCard } from "react-icons/fa";
+
 import axios from 'axios';
 
 function RecenterMap({location}){
@@ -24,7 +31,11 @@ function RecenterMap({location}){
 
 function CheckOut() {
     const { location, address } = useSelector(state => state.map)
+
+    const {cartItems } = useSelector(state => state.user)
+
     const [addressInput,setAddressInput]=useState("")
+    const [paymentMethod,setPaymentMethod]=useState("cod")
     const apiKey=import.meta.env.VITE_GEOAPIKEY
     const dispatch=useDispatch()
 
@@ -127,6 +138,68 @@ setAddressInput(address)
 
                         </div>
                     </div>
+                </section>
+
+
+
+
+
+                <section>
+                    <h2 className='text-lg font-semibold mb-3 text-gray-800'>Payment Method</h2>
+
+                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+
+                       <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition${paymentMethod==="cod"?"border-red-500 bg-orange-50 shadow":"border-gray-200 hover:border-gray-300"}`} onClick={()=>setPaymentMethod("cod")}>
+                       
+                       <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-green-100"><MdDeliveryDining className='text-green-600 text-xl' />
+                       </span>
+
+
+                       <div>
+                        <p className='font-medium text-gray-800'>Cash on delivery</p>
+                        <p className='text-xs texr-gray-500'>Pay when your food arrives</p>
+
+                       </div>
+
+
+
+                        </div>
+
+
+
+                        <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition${paymentMethod==="online"?"border-red-500 bg-orange-50 shadow":"border-gray-200 hover:border-gray-300"}`} onClick={()=>setPaymentMethod("online")}>
+                            
+                            <span className='inline-flex h-10 w-10 items-center justify-center rounded-full bg-purple-100'><FaMobileScreenButton className='text-purple-700 text-lg' />
+                            </span>
+
+                            <span className='inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-100'><FaCreditCard className='text-blue-700 text-lg'/>
+                            </span>
+
+                            <div >
+                                <p className='font-medium text-gray-800'>UPI/Credit ? Debit Card</p>
+
+                                <p className='text-xs text-gray-500'>Pay Securely Online</p>
+                            </div>
+                            
+                            </div> 
+                    </div>
+                </section>
+
+
+                <section>
+                    <h2 className='text-lg font-semibold mb-3 text-gray-800'>Order Summary</h2>
+
+                    <div className='rounded-xl border bg-gray-50 p-4 space-y-2'>
+                        {cartItems.map((item,index)=>(
+                            <div key={index} className='flex justify-between text-sm text-gray-700'>
+                            <span> {item.name} x {item.quantity}  </span>
+
+                            <span>{item.price*item.quantity}</span>
+                         </div>
+                        ))}
+
+                    </div>
+
                 </section>
 
             </div>
