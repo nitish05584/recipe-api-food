@@ -19,6 +19,7 @@ import { FaMobileScreenButton } from "react-icons/fa6";
 import { FaCreditCard } from "react-icons/fa";
 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function RecenterMap({location}){
     if(location.lat && location.lon){
@@ -32,12 +33,20 @@ function RecenterMap({location}){
 function CheckOut() {
     const { location, address } = useSelector(state => state.map)
 
-    const {cartItems } = useSelector(state => state.user)
+    const {cartItems,totalAmount } = useSelector(state => state.user)
+
+    const navigate=useNavigate()
 
     const [addressInput,setAddressInput]=useState("")
     const [paymentMethod,setPaymentMethod]=useState("cod")
     const apiKey=import.meta.env.VITE_GEOAPIKEY
     const dispatch=useDispatch()
+
+
+    const deliveryFee=totalAmount>500?0:40
+    const AmountWithDeliveryFee=totalAmount+deliveryFee
+
+
 
 const onDragEnd=(e)=>{
    
@@ -194,13 +203,35 @@ setAddressInput(address)
                             <div key={index} className='flex justify-between text-sm text-gray-700'>
                             <span> {item.name} x {item.quantity}  </span>
 
-                            <span>{item.price*item.quantity}</span>
+                            <span>₹{item.price*item.quantity}</span>
                          </div>
                         ))}
+                       <hr className='border-gray-200 my-2'/>
+
+                       <div className='flex justify-between font-medium text-gray-800'>
+                        <span >Subtotal</span>
+
+                        <span>{totalAmount}</span>
+                       </div>
+
+
+                       <div className='flex justify-between text-gray-700'>
+
+                        <span>Delivery Fee</span>
+
+                        <span>{deliveryFee==0?"Free":deliveryFee}</span>
+                       </div>
+
+                       <div className='flex justify-between text-lg font-bold text-red-500 pt-2'>  
+                       <span>Total</span>
+                    <span>{AmountWithDeliveryFee}</span>
+                       </div>
 
                     </div>
 
                 </section>
+
+                <button className='w-full bg-red-500 hover:bg-red-500 text-white py-3 rounded-xl font-semibold'>{paymentMethod=="cod"?"place Order":"Pay & Place Order"}</button>
 
             </div>
         </div>
